@@ -29,7 +29,24 @@ console.log(`Part 1 solution: ${part1(input)}`);
 
 const part2 = (input) => {
     const parsedInput = parseInput(input);
-    return true;
+    return countReachableRolls(parsedInput);
+}
+
+const countReachableRolls = (rollMap) => {
+    let reachableRollCount = 0;
+    for (let i = 0; i < rollMap.length; i++) {
+        for (let j = 0; j < rollMap[i].length; j++) {
+            const element = rollMap[i][j];
+            if( element === '@' && allAdjacentElementsFlattened(rollMap, [i, j]).filter(el => el === '@').length < 4) {
+                reachableRollCount++
+                rollMap[i][j] = '.'
+            }
+        }
+    }
+    if (reachableRollCount > 0) {
+        return reachableRollCount + countReachableRolls(rollMap)
+    }
+    return reachableRollCount
 }
 
 console.log(`Part 2 example solution: ${part2(exampleInput)}`);
